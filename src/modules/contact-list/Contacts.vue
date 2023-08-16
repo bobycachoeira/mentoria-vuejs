@@ -4,6 +4,10 @@
       @save-contact="addNewContact"
       v-model="showModalAddContact"
     />
+    <edit-contact-dialog-component
+      @edit-contact="setShowEditContact"
+      v-model="showModalEditContact"
+    />
     <v-col cols="12">
       <contact-header-component
         @add-new-contact="setShowAddNewContact"
@@ -23,6 +27,7 @@
 import ContactHeaderComponent from "./components/contact-header/contact-header.component.vue";
 import ContactListComponent from "./components/contact-list/contact-list.component.vue";
 import AddNewContactDialogComponent from "./components/dialogs/add-new-contact.dialog.vue";
+import EditContactDialogComponent from "./components/dialogs/edit-contact.dialog.vue";
 import { Contact } from "./entities/contact.entity";
 import { PhonebookFilter } from "./entities/phonebook-filter";
 import { Phonebook } from "./entities/phonebook.entity";
@@ -33,11 +38,13 @@ export default {
     ContactHeaderComponent,
     ContactListComponent,
     AddNewContactDialogComponent,
+    EditContactDialogComponent,
   },
   data: () => ({
     phonebook: new Phonebook(),
     filter: new PhonebookFilter(),
     showModalAddContact: false,
+    showModalEditContact: false,
   }),
   methods: {
     async getContacts() {
@@ -49,6 +56,13 @@ export default {
     },
     closeDialogAddNewContact() {
       this.showModalAddContact = false;
+    },
+
+    setShowEditContact() {
+      this.showModalEditContact = true;
+    },
+    closeDialogEditContact() {
+      this.showModalEditContact = false;
     },
     addNewContact(contact: Contact) {
       this.phonebook.addContact(contact);

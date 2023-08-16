@@ -5,6 +5,7 @@
       :key="index"
       :title="item.name"
       :subtitle="item.phone"
+      @click="editContact"
     >
 
           <!-- <v-btn>
@@ -37,6 +38,9 @@ export default {
     deleteContact(contact: Contact) {
       this.$emit("delete-contact", contact);
     },
+    editContact() {
+      this.$emit("edit-contact");
+    }
   },
 };
 </script>
