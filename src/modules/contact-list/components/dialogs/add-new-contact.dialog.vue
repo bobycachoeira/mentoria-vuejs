@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog persistent :model-value="modelValue" @update:modelValue="closeDialog" width="auto">
+    <v-dialog persistent :model-value="modelValue" @update:modelValue="closeDialog" width="400px">
       <v-card>
         <v-card-title>
           <h2>Adicionar novo contato</h2>
@@ -9,8 +9,8 @@
           <v-form ref="form">
             <v-text-field :rules="[rules.required, rules.minLengthName]" v-model="contact.name" label="Nome" outlined
               dense></v-text-field>
-            <v-text-field :rules="[rules.required]" v-model="contact.phone" label="Telefone" outlined
-              dense ></v-text-field>
+            <v-text-field :rules="[rules.required, rules.maxLengthPhone, rules.minLengthPhone]" v-model="contact.phone" label="Telefone"
+              outlined dense type="number"></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -38,6 +38,10 @@ export default {
       required: (value: string) => !!value || "Campo obrigatório",
       minLengthName: (value: string) =>
         value.length >= 3 || "Nome deve ter no mínimo 3 caracteres",
+      maxLengthPhone: (value: string) =>
+        value.length <= 11 || "Telefone deve ter no máximo 11 caracteres",
+      minLengthPhone: (value: string) =>
+        value.length >= 10 || "Telefone deve ter ao menos 10 caracteres",
     },
   }),
   methods: {

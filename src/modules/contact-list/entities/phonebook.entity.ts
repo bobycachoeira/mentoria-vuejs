@@ -14,6 +14,10 @@ export class Phonebook {
   }
   addContact(contact: Contact): void {
     this.contacts.push(contact);
+  };
+  editContact(contact: Contact): void {
+    const index = this.contacts.findIndex((contacts) => contacts.id === contact.id);
+    this.contacts[index] = contact;
   }
 
   deleteContact(id: string): void {
