@@ -8,7 +8,7 @@
       @click="editContact(item)"
     >
       <template v-slot:append>
-        <v-btn @click="deleteContact(item)">
+        <v-btn @click="deleteContact(item)" class="delete-btn">
           <v-icon icon="mdi-delete" absolute dark fab top right color="red" />
         </v-btn>
       </template>
@@ -42,3 +42,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.delete-btn {
+  background: fixed #590381;
+}
+
+.contact-list-item {
+  background: fixed #8916be;
+}
+</style>

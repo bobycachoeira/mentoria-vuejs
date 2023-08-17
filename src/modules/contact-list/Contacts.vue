@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="contacts">
     <add-new-contact-dialog-component
       @save-contact="addNewContact"
       v-model="showModalAddContact"
@@ -8,6 +8,7 @@
     <edit-contact-dialog-component
       @edit-contact="editContact"
       v-model="showModalEditContact"
+      :contact="contact"
       min-width="80%"
     />
     <v-col cols="12">
@@ -18,6 +19,7 @@
     </v-col>
     <v-col cols="12">
       <contact-list-component
+      class="contact-list-item"
         @delete-contact="deleteContact"
         @edit-contact="setShowEditContact"
         :contact-list="filteredContacts"
@@ -48,7 +50,6 @@ export default {
     filter: new PhonebookFilter(),
     showModalAddContact: false,
     showModalEditContact: false,
-    selectedContact: new Contact(),
   }),
   methods: {
     async getContacts() {
@@ -95,3 +96,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.contacts {
+  background:  #590381;
+}
+
+.contact-list-item {
+  background: #7a10ac;
+}
+</style>

@@ -12,6 +12,7 @@ export class Phonebook {
       contact.name.toUpperCase().includes(name.toUpperCase())
     );
   }
+
   addContact(contact: Contact): void {
     this.contacts.push(contact);
   };

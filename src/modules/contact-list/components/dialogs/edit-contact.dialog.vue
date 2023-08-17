@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { Contact } from "../../entities/contact.entity";
+
 export default {
   props: {
     modelValue: {
@@ -38,7 +39,7 @@ export default {
     },
   },
   data: () => ({
-    contact: new Contact(),
+    // contact: new Contact(),
     rules: {
       required: (value: string) => !!value || "Campo obrigatório",
       minLengthName: (value: string) =>

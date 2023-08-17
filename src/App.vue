@@ -1,5 +1,5 @@
 <template>
-  <contact-app />
+  <contact-app class="contacts"/>
 </template>
 
 <script lang="ts">
@@ -12,3 +12,11 @@ export default {
   data: () => ({}),
 };
 </script>
+
+<style>
+.contacts {
+  background: fixed #590381;
+  margin: 0 0 0 0;
+  height: 100%;
+}
+</style>
