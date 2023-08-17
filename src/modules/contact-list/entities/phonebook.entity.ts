@@ -18,7 +18,7 @@ export class Phonebook {
   };
   editContact(contact: Contact): void {
     const index = this.contacts.findIndex((contacts) => contacts.id === contact.id);
-    this.contacts[index] = contact;
+    this.contacts.splice(index, 1, contact);
   }
 
   deleteContact(id: string): void {

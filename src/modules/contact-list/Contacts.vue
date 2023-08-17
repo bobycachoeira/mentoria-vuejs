@@ -6,9 +6,9 @@
       width="500"
     />
     <edit-contact-dialog-component
-      @edit-contact="editContact"
       v-model="showModalEditContact"
-      :contact="contact"
+      @confirm="confirmEditContact"
+      :contact="contactToEdit"
       min-width="80%"
     />
     <v-col cols="12">
@@ -20,8 +20,9 @@
     <v-col cols="12">
       <contact-list-component
       class="contact-list-item"
+ 
         @delete-contact="deleteContact"
-        @edit-contact="setShowEditContact"
+        @edit-contact="editContact"
         :contact-list="filteredContacts"
       />
     </v-col>
@@ -50,6 +51,7 @@ export default {
     filter: new PhonebookFilter(),
     showModalAddContact: false,
     showModalEditContact: false,
+    contactToEdit: new Contact(),
   }),
   methods: {
     async getContacts() {
@@ -74,10 +76,22 @@ export default {
       this.closeDialogAddNewContact();
     },
     editContact(contact: Contact) {
+      this.contactToEdit = new Contact(contact);
+      this.setShowEditContact();
+      // this.closeDialogEditContact();
+    },
+
+    confirmEditContact(contact: Contact) {
       this.phonebook.editContact(contact);
       this.closeDialogEditContact();
     },
+    cancelDeleteContact(){
+      this.closeDialogEditContact();
+    },
 
+    confirmDeleteContact(contact: Contact) {
+      this.deleteContact(contact);
+    },
     setFilterByName(name: string) {
       this.filter.name = name;
     },

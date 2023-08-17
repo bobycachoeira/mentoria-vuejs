@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog persistent :model-value="modelValue" :contact="contact" width="400px">
+    <v-dialog persistent :model-value="modelValue" width="400px">
       <v-card>
         <v-card-title>
           <h2>Editar contato</h2>
@@ -15,7 +15,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">Fechar</v-btn>
-          <v-btn @click="editContact" color="primary">Salvar contato</v-btn>
+          <v-btn @click="confirm" color="primary">Salvar contato</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -39,7 +39,6 @@ export default {
     },
   },
   data: () => ({
-    // contact: new Contact(),
     rules: {
       required: (value: string) => !!value || "Campo obrigatório",
       minLengthName: (value: string) =>
@@ -55,11 +54,11 @@ export default {
       this.$emit("update:modelValue", false);
     },
 
-    async editContact() {
+    async confirm() {
       const form: any = this.$refs.form;
       const { valid } = await form.validate();
       if (valid) {
-        this.$emit("edit-contact", this.contact);
+        this.$emit("confirm", this.contact);
       }
     },
   },

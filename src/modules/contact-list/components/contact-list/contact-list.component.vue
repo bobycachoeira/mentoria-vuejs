@@ -4,11 +4,11 @@
       v-for="(item, index) in contactList"
       :key="index"
       :title="item.name"
-      :subtitle="formatPhoneNumber(item.phone)"
+      :subtitle="item.formatPhoneNumber"
       @click="editContact(item)"
     >
       <template v-slot:append>
-        <v-btn @click="deleteContact(item)" class="delete-btn">
+        <v-btn @click="deleteContact(item, $event)" class="delete-btn">
           <v-icon icon="mdi-delete" absolute dark fab top right color="red" />
         </v-btn>
       </template>
@@ -30,7 +30,8 @@ export default {
   },
   data: () => ({}),
   methods: {
-    deleteContact(contact: Contact) {
+    deleteContact(contact: Contact, event: Event) {
+      event.stopPropagation();
       this.$emit("delete-contact", contact);
     },
     editContact(contact: Contact) {   
