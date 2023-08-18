@@ -11,6 +11,14 @@
       :contact="contactToEdit"
       min-width="80%"
     />
+
+    <delete-contact-dialog-component
+      v-model="showModalConfirmDelete"
+      @confirm-delete-contact="confirmDeleteContact"
+      :contact="contactToDelete"
+      min-width="80%"
+    />
+
     <v-col cols="12">
       <contact-header-component
         @add-new-contact="setShowAddNewContact"
@@ -20,7 +28,6 @@
     <v-col cols="12">
       <contact-list-component
       class="contact-list-item"
- 
         @delete-contact="deleteContact"
         @edit-contact="editContact"
         :contact-list="filteredContacts"
@@ -34,6 +41,7 @@ import ContactHeaderComponent from "./components/contact-header/contact-header.c
 import ContactListComponent from "./components/contact-list/contact-list.component.vue";
 import AddNewContactDialogComponent from "./components/dialogs/add-new-contact.dialog.vue";
 import EditContactDialogComponent from "./components/dialogs/edit-contact.dialog.vue";
+import DeleteContactDialogComponent from "./components/dialogs/delete-contact.dialog.vue";
 import { Contact } from "./entities/contact.entity";
 import { PhonebookFilter } from "./entities/phonebook-filter";
 import { Phonebook } from "./entities/phonebook.entity";
@@ -45,6 +53,7 @@ export default {
     ContactListComponent,
     AddNewContactDialogComponent,
     EditContactDialogComponent,
+    DeleteContactDialogComponent
   },
   data: () => ({
     phonebook: new Phonebook(),
@@ -52,6 +61,8 @@ export default {
     showModalAddContact: false,
     showModalEditContact: false,
     contactToEdit: new Contact(),
+    contactToDelete: new Contact(),
+    showModalConfirmDelete: false,
   }),
   methods: {
     async getContacts() {
@@ -78,26 +89,29 @@ export default {
     editContact(contact: Contact) {
       this.contactToEdit = new Contact(contact);
       this.setShowEditContact();
-      // this.closeDialogEditContact();
     },
 
     confirmEditContact(contact: Contact) {
       this.phonebook.editContact(contact);
       this.closeDialogEditContact();
     },
-    cancelDeleteContact(){
-      this.closeDialogEditContact();
-    },
-
     confirmDeleteContact(contact: Contact) {
-      this.deleteContact(contact);
+      this.phonebook.deleteContact(contact.id);
+      this.closeConfirmDeleteDialog();
+    },
+    closeConfirmDeleteDialog() {
+      this.showModalConfirmDelete = false
+    },
+    setShowConfirmDeleteDialog() {
+      this.showModalConfirmDelete = true
     },
     setFilterByName(name: string) {
       this.filter.name = name;
     },
 
     deleteContact(contact: Contact) {
-      this.phonebook.deleteContact(contact.id);
+      this.contactToDelete = new Contact(contact);
+      this.setShowConfirmDeleteDialog();
     },
   },
   computed: {
