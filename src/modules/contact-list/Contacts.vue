@@ -13,7 +13,7 @@
     </v-col>
     <v-col cols="12">
       <contact-list-component @delete-contact="deleteContact" @edit-contact="editContact" :showAlert="showAlert"
-        :contact-list="filteredContacts" class="contact-list-item" />
+        @cancel-delete="cancelDelete" :contact-list="filteredContacts" class="contact-list-item" />
     </v-col>
   </v-row>
 </template>
@@ -47,7 +47,9 @@ export default {
     showModalConfirmDelete: false,
     showAlert: false,
     tempoEmSegundos: 0,
-    intervalId: 0
+    intervalId: 0,
+    dismissDelete: false,
+    deletedContact: new Contact(),
   }),
   methods: {
     async getContacts() {
@@ -81,10 +83,10 @@ export default {
       this.closeDialogEditContact();
     },
     confirmDeleteContact(contact: Contact) {
-      this.phonebook.deleteContact(contact.id);
-      this.closeConfirmDeleteDialog();
-      this.mostraNotificacao();
-      // this.setShowAlertTrue();
+      this.deletedContact = contact;
+      this.mostraNotificacao(contact);
+      // this.phonebook.deleteContact(contact.id);
+      // this.closeConfirmDeleteDialog();
     },
 
     setShowAlertTrue() {
@@ -97,10 +99,6 @@ export default {
     closeConfirmDeleteDialog() {
       this.showModalConfirmDelete = false
     },
-    someComNotificacao() {
-      this.showAlert = false;
-      clearInterval(this.intervalId);
-    },
     setShowConfirmDeleteDialog() {
       this.showModalConfirmDelete = true
     },
@@ -112,18 +110,21 @@ export default {
       this.contactToDelete = new Contact(contact);
       this.setShowConfirmDeleteDialog();
     },
-    mostraNotificacao() {
-      this.setShowAlertTrue();
-      this.intervalId = setInterval(() => {
-        this.tempoEmSegundos += 1;
-        console.log("intervalo" + this.intervalId);
-        console.log("Tempo" + this.tempoEmSegundos);
-        if (this.tempoEmSegundos >= 5) {
+    mostraNotificacao(contact: Contact) {
+        this.setShowAlertTrue();
+        this.alertTimeout = setTimeout(() => {
           this.setShowAlertFalse();
-          clearInterval(this.intervalId);
-          this.tempoEmSegundos = 0;
-        }
-      }, 1000);
+          this.phonebook.deleteContact(contact.id);
+          this.closeConfirmDeleteDialog();
+        }, 5000);
+
+    },
+    cancelDelete() {
+      // this.addNewContact(this.deletedContact);
+      if (this.alertTimeout) {
+        clearTimeout(this.alertTimeout);
+    }
+      this.setShowAlertFalse();
     }
   },
   computed: {

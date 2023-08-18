@@ -1,5 +1,6 @@
 <template>
-  <contact-app class="contacts"/>
+  <!-- <contact-app class="contacts"/> -->
+  <RouterView />
 </template>
 
 <script lang="ts">

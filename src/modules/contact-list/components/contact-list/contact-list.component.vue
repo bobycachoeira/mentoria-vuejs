@@ -8,9 +8,11 @@
         </v-btn>
       </template>
     </v-list-item>
+    <v-alert v-if="showAlert" type="success" title="Deletado com sucesso" text="Contato deletado com sucesso!">
+      <br>
+      <v-btn @click="cancelDelete">DISMISS</v-btn>
+    </v-alert>
   </v-list>
-
-  <v-alert v-if="showAlert" type="success" title="Deletado com sucesso" text="Contato deletado com sucesso!"></v-alert>
 </template>
 
 <script lang="ts">
@@ -38,6 +40,9 @@ export default {
     editContact(contact: Contact) {
       this.$emit("edit-contact", contact);
     },
+    cancelDelete() {
+      this.$emit("cancel-delete");
+    }
   },
 };
 </script>
