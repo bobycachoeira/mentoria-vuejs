@@ -1,37 +1,19 @@
 <template>
-  <v-row class="contacts">
-    <add-new-contact-dialog-component
-      @save-contact="addNewContact"
-      v-model="showModalAddContact"
-      width="500"
-    />
-    <edit-contact-dialog-component
-      v-model="showModalEditContact"
-      @confirm="confirmEditContact"
-      :contact="contactToEdit"
-      min-width="80%"
-    />
+  <v-row class="contacts" height="100%">
+    <add-new-contact-dialog-component @save-contact="addNewContact" v-model="showModalAddContact" width="500" />
+    <edit-contact-dialog-component v-model="showModalEditContact" @confirm="confirmEditContact" :contact="contactToEdit"
+      min-width="80%" />
 
-    <delete-contact-dialog-component
-      v-model="showModalConfirmDelete"
-      @confirm-delete-contact="confirmDeleteContact"
-      :contact="contactToDelete"
-      min-width="80%"
-    />
+
+    <delete-contact-dialog-component v-model="showModalConfirmDelete" @confirm-delete-contact="confirmDeleteContact"
+      :contact="contactToDelete" min-width="80%" />
 
     <v-col cols="12">
-      <contact-header-component
-        @add-new-contact="setShowAddNewContact"
-        v-model="filter.name"
-      />
+      <contact-header-component @add-new-contact="setShowAddNewContact" v-model="filter.name" />
     </v-col>
     <v-col cols="12">
-      <contact-list-component
-      class="contact-list-item"
-        @delete-contact="deleteContact"
-        @edit-contact="editContact"
-        :contact-list="filteredContacts"
-      />
+      <contact-list-component @delete-contact="deleteContact" @edit-contact="editContact" :showAlert="showAlert"
+        :contact-list="filteredContacts" class="contact-list-item" />
     </v-col>
   </v-row>
 </template>
@@ -41,7 +23,7 @@ import ContactHeaderComponent from "./components/contact-header/contact-header.c
 import ContactListComponent from "./components/contact-list/contact-list.component.vue";
 import AddNewContactDialogComponent from "./components/dialogs/add-new-contact.dialog.vue";
 import EditContactDialogComponent from "./components/dialogs/edit-contact.dialog.vue";
-import DeleteContactDialogComponent from "./components/dialogs/delete-contact.dialog.vue";
+import DeleteContactDialogComponent from "./components/dialogs/confirm-delete-contact.dialog.vue";
 import { Contact } from "./entities/contact.entity";
 import { PhonebookFilter } from "./entities/phonebook-filter";
 import { Phonebook } from "./entities/phonebook.entity";
@@ -63,6 +45,9 @@ export default {
     contactToEdit: new Contact(),
     contactToDelete: new Contact(),
     showModalConfirmDelete: false,
+    showAlert: false,
+    tempoEmSegundos: 0,
+    intervalId: 0
   }),
   methods: {
     async getContacts() {
@@ -98,9 +83,23 @@ export default {
     confirmDeleteContact(contact: Contact) {
       this.phonebook.deleteContact(contact.id);
       this.closeConfirmDeleteDialog();
+      this.mostraNotificacao();
+      // this.setShowAlertTrue();
     },
+
+    setShowAlertTrue() {
+      this.showAlert = true;
+    },
+    setShowAlertFalse() {
+      this.showAlert = false;
+    },
+
     closeConfirmDeleteDialog() {
       this.showModalConfirmDelete = false
+    },
+    someComNotificacao() {
+      this.showAlert = false;
+      clearInterval(this.intervalId);
     },
     setShowConfirmDeleteDialog() {
       this.showModalConfirmDelete = true
@@ -113,6 +112,19 @@ export default {
       this.contactToDelete = new Contact(contact);
       this.setShowConfirmDeleteDialog();
     },
+    mostraNotificacao() {
+      this.setShowAlertTrue();
+      this.intervalId = setInterval(() => {
+        this.tempoEmSegundos += 1;
+        console.log("intervalo" + this.intervalId);
+        console.log("Tempo" + this.tempoEmSegundos);
+        if (this.tempoEmSegundos >= 5) {
+          this.setShowAlertFalse();
+          clearInterval(this.intervalId);
+          this.tempoEmSegundos = 0;
+        }
+      }, 1000);
+    }
   },
   computed: {
     filteredContacts() {
@@ -127,7 +139,7 @@ export default {
 
 <style scoped>
 .contacts {
-  background:  #590381;
+  background: #590381;
 }
 
 .contact-list-item {

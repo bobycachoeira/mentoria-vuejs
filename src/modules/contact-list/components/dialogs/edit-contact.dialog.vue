@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog persistent :model-value="modelValue" width="400px">
+    <v-dialog persistent :model-value="modelValue" width="400px" transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
           <h2>Editar contato</h2>
@@ -14,8 +14,8 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeDialog">Fechar</v-btn>
-          <v-btn @click="confirm" color="primary">Salvar contato</v-btn>
+          <v-btn @click="closeDialog" color="blue-darken-1" variant="text">Fechar</v-btn>
+          <v-btn @click="confirm" color="green-darken-1" variant="text">Salvar contato</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

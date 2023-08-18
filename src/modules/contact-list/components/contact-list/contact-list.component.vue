@@ -1,12 +1,7 @@
 <template>
   <v-list max-height="600px" lines="one">
-    <v-list-item
-      v-for="(item, index) in contactList"
-      :key="index"
-      :title="item.name"
-      :subtitle="item.formatPhoneNumber"
-      @click="editContact(item)"
-    >
+    <v-list-item v-for="(item, index) in contactList" :key="index" :title="item.name" :subtitle="item.formatPhoneNumber"
+      @click="editContact(item)">
       <template v-slot:append>
         <v-btn @click="deleteContact(item, $event)" class="delete-btn">
           <v-icon icon="mdi-delete" absolute dark fab top right color="red" />
@@ -14,6 +9,8 @@
       </template>
     </v-list-item>
   </v-list>
+
+  <v-alert v-if="showAlert" type="success" title="Deletado com sucesso" text="Contato deletado com sucesso!"></v-alert>
 </template>
 
 <script lang="ts">
@@ -27,19 +24,20 @@ export default {
       required: true,
       default: () => [],
     },
+    showAlert: {
+      type: Boolean,
+      required: true,
+      default: () => false,
+    },
   },
-  data: () => ({}),
   methods: {
     deleteContact(contact: Contact, event: Event) {
       event.stopPropagation();
       this.$emit("delete-contact", contact);
     },
-    editContact(contact: Contact) {   
+    editContact(contact: Contact) {
       this.$emit("edit-contact", contact);
     },
-    formatPhoneNumber(phone: string) {
-      return `(${phone.slice(0, 2)}) ${phone.slice(2, 7)}-${phone.slice(7, 11)}`;
-    }
   },
 };
 </script>

@@ -2,26 +2,26 @@ export const contacts = [
   {
     id: '1',
     name: "John Doe",
-    phone: "123456789",
+    phone: "12345678901",
   },
   {
     id: '2',
     name: "Jane Doe",
-    phone: "987654321",
+    phone: "23456789012",
   },
   {
     id: '3',
     name: "Foo Bar",
-    phone: "123123123",
+    phone: "34567890123",
   },
   {
     id: '4',
     name: "Baz Qux",
-    phone: "456456456",
+    phone: "45678901234",
   },
   {
     id: '5',
     name: "Fiz Biz",
-    phone: "789789789",
+    phone: "35678901234",
   },
 ];
